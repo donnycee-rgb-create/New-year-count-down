@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festive New Year Countdown</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #0a1333, #000000);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Multiple snow layers for depth */
+        .snow, .snow2, .snow3 {
+            position: fixed;
+            top: -10px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snow {
+            background-image: 
+                radial-gradient(3px 3px at 20px 30px, #fff, transparent),
+                radial-gradient(3px 3px at 40px 70px, #fff, transparent),
+                radial-gradient(3px 3px at 50px 160px, #fff, transparent),
+                radial-gradient(3px 3px at 90px 40px, #fff, transparent);
+            background-size: 200px 200px;
+            animation: snow 6s linear infinite;
+        }
+
+        .snow2 {
+            background-image: 
+                radial-gradient(2px 2px at 100px 50px, #fff, transparent),
+                radial-gradient(2px 2px at 150px 120px, #fff, transparent),
+                radial-gradient(2px 2px at 200px 90px, #fff, transparent);
+            background-size: 300px 300px;
+            animation: snow 8s linear infinite;
+        }
+
+        .snow3 {
+            background-image: 
+                radial-gradient(1.5px 1.5px at 250px 180px, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 180px 220px, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 120px 250px, #fff, transparent);
+            background-size: 400px 400px;
+            animation: snow 10s linear infinite;
+        }
+
+        /* Christmas Lights */
+        .lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background-image: 
+                radial-gradient(5px 5px at 10px 10px, red, transparent),
+                radial-gradient(5px 5px at 30px 10px, green, transparent),
+                radial-gradient(5px 5px at 50px 10px, gold, transparent),
+                radial-gradient(5px 5px at 70px 10px, blue, transparent);
+            background-size: 80px 20px;
+            animation: twinkle 1s ease-in-out infinite alternate;
+        }
+
+        /* Floating Stars */
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            animation: twinkle 1.5s infinite alternate;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3),
+                        0 0 50px rgba(0, 255, 0, 0.3),
+                        0 0 70px rgba(0, 0, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 4s linear infinite;
+        }
+
+        input {
+            padding: 15px;
+            margin: 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            width: 250px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            outline: none;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #ff0000);
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            animation: gradient 3s ease infinite;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+
+        .celebration {
+            font-size: 1.8rem;
+            padding: 25px;
+            animation: celebrate 1.5s ease-out;
+        }
+
+        /* Christmas decorations */
+        .decoration {
+            position: absolute;
+            font-size: 2rem;
+            animation: swing 3s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes snow {
+            to { transform: translateY(200px); }
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.3),
+                           0 0 40px rgba(0, 255, 0, 0.3);
+            }
+            to {
+                box-shadow: 0 0 40px rgba(255, 0, 0, 0.5),
+                           0 0 60px rgba(0, 255, 0, 0.5);
+            }
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(0) rotate(-180deg); }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(-10deg); }
+        }
+
+        .firework {
+            position: absolute;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(30); opacity: 0; }
+        }
+
+        #userName {
+            background: linear-gradient(45deg, #ff0, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            font-size: 1.4em;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .countdown {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+            input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lights"></div>
+    <div class="snow"></div>
+    <div class="snow2"></div>
+    <div class="snow3"></div>
+    <div class="container">
+        <div class="decoration" style="top: -20px; left: 10px;">🎄</div>
+        <div class="decoration" style="top: -20px; right: 10px;">🎄</div>
+        <div class="decoration" style="bottom: -20px; left: 10px;">🎅</div>
+        <div class="decoration" style="bottom: -20px; right: 10px;">🤶</div>
+        
+        <div id="nameInput">
+            <h2>✨ Magical New Year Countdown ✨</h2>
+            <input type="text" id="name" placeholder="Enter your name">
+            <button onclick="startCountdown()">Begin the Magic ✨</button>
+        </div>
+        
+        <div id="countdownDisplay" class="hidden">
+            <p>Season's Greetings, <span id="userName"></span>! 🎄</p>
+            <div class="countdown" id="countdown"></div>
+            <p>🌟 Magic is in the air! 🌟</p>
+        </div>
+
+        <div id="celebration" class="celebration hidden">
+            <h1>🎉 Happy New Year! 🎊</h1>
+            <p>✨ Welcome to <span id="newYear"></span>! ✨</p>
+            <p>🌟 May your year be filled with joy, </p>
+            <p>🎄 peace, love, and endless blessings! 🎄</p>
+            <p>🎀 Let the magic begin! 🎀</p>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+        
+        // Create initial stars
+        function createStars() {
+            for(let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 1000);
+        }
+
+        function startCountdown() {
+            const name = document.getElementById('name').value || 'Friend';
+            document.getElementById('userName').textContent = name;
+            document.getElementById('nameInput').classList.add('hidden');
+            document.getElementById('countdownDisplay').classList.remove('hidden');
+            
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const newYear = new Date(currentYear + 1, 0, 1, 0, 0, 0);
+            const diff = newYear - now;
+
+            if (diff <= 0) {
+                clearInterval(countdownInterval);
+                showCelebration();
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function showCelebration() {
+            document.getElementById('countdownDisplay').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+            document.getElementById('newYear').textContent = new Date().getFullYear();
+            setInterval(createFirework, 200);
+        }
+
+        // Initialize stars on load
+        createStars();
+    </script>
+</body>
+</html>
